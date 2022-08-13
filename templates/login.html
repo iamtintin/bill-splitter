@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Bill Splitter</title>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" charset="utf-8">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+        <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    </head>
+    <body>
+        <div id="errmsg" class="hidden"></div>
+        <div class="loginbox">        
+            <h1>Login</h1>
+        
+            <form action='/login' class="iform" id="loginform" method="POST">
+                <div class="field">
+                    <label for="email" class="hidden"> Email </label>
+                    <input type="email" name="email" id="email" placeholder="Email" class="ibox" autofocus required minlength="3" maxlength="195"><br>
+                </div>
+            
+                <div class="field">
+                    <label for="user_pass" class="hidden"> Password </label>
+                    <input type="password" name="user_pass" id="user_pass" placeholder="Password" class="ibox" required minlength="5" maxlength="55"><br>
+                </div>
+
+                <div class="field">
+                    <input type="submit" class="submitbtn" value="Sign in">
+                </div>
+            </form>
+        
+            <form action='register' class="ibtn">
+                <input type="submit" class="txtbtn" value="Register now">
+            </form>
+        </div>
+    </body>
+    <script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Bill Splitter</title>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" charset="utf-8">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+        <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    </head>
+    <body>
+
+        {% with activeElem="bills", username=current_user.username %}
+            {% include "header.html"%}
+        {% endwith%}
+
+        <div class="content">
+            {% if err == "" %}
+                <div class="list-header">
+                    <h1> {{ item.bill.name }} <span class="subtext"> for <span class="bill-head">{{ item.bill.party.name }}</span></span></h1>
+                    <p class="fbill-descr">{{ item.bill.description }}</p>
+                </div>
+
+                <div class="list-content">
+                    <p><span class="bill-label"> Bill Created: </span> {{ item.bill.start.strftime('%H:%M %d/%m/%y') }} </p>
+                    {% if item.bill.end is none %}
+                        <p><span class="bill-label"> Bill Due: </span> None </p>
+                    {% else %}
+                        <p><span class="bill-label"> Bill Due: </span> {{ item.bill.end.strftime('%H:%M %d/%m/%y') }} </p>
+                    {% endif %}
+                    <p><span class="bill-label"> Amount: </span> {{ "£%.2f"|format(item.amount) }} </p>
+                </div>
+                
+                <div class="list-content">
+                    <p id="status"><span class="bill-label"> Status: </span><span class="{{ 'bill-paid' if item.status else 'bill-unpaid' }}">{{ 'PAID' if item.status else 'UNPAID' }}</span></p>
+                    <p id="confirm">
+                        {% if item.status %}
+                            <span class="bill-label"> Confirmed: </span><span class="{{ 'bill-paid' if item.confirmed else 'bill-pending' }}">{{ 'CONFIRMED' if item.confirmed else 'PENDING'}}</span>
+                        {% endif %}
+                    </p>
+                    <p id="paidtime">
+                        {% if item.status %}
+                            <span class="bill-label"> Paid Date: </span>{{ item.paid_dt.strftime('%H:%M %d/%m/%y') }}
+                        {% endif %}
+                    </p>
+                </div>
+
+
+                {% if not item.status %}
+                    <form action="/paymentredirect" id="billpayform" method="POST">
+                        <input type="hidden" name="id" value="{{ item.id }}">
+                        <input type="submit" class="btn submit-btn" value="Confirm Payment">
+                    </form>
+                {% endif %}
+
+                <div id="errmsg" class="hidden"></div>
+            {% else %}
+                <div class="visible-err">{{ err }}</div>
+            {% endif %}
+        </div>
+        
+    </body>
+
+    <script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/payBill.js') }}"></script>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Bill Splitter</title>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" charset="utf-8">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+        <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    </head>
+    <body>
+        {% with activeElem="partyoverview", username=current_user.username %}
+            {% include "header.html"%}
+        {% endwith%}
+        <div class="content">
+            <h1>Create new Party</h1>
+            {% if friends|length == 0 %}
+                <p>No friended users to create party</p>
+            {% else %}
+
+                <div id="errmsg" class="hidden"></div>
+
+                <form action="/addpartyredirect" id="partyform" method="POST">
+
+                    <div class="form-container">
+                        <label for="partyname" class="form-label">Party Name: </label>
+                        <input type="text" name="partyname" id="partyname" required minlength="3" maxlength="195" placeholder="Party Name">
+                    </div>
+
+                    <div class="form-container">
+                        <p class="form-label">Select Members from Friends:</p>
+                        {% for friend in friends %}
+                            <input type="checkbox" name="memberlist" value="{{friend.id}}" id="user-{{friend.id}}">
+                            <label for="user-{{friend.id}}" >{{friend.name}}</label><br>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="form-container">
+                        <p class="form-label">Party Type: <br>
+                            <span class="form-text">
+                                Admin Party Type is where the creator (you) has all the permissions whilst other members can only send a request for confirmation of a bill payment that must then be confirmed by the creator. <br>
+                                Equal Party Type is where all the members all the permissions and all members can pay bills without requiring any confirmations.
+                            </span>
+                        </p>
+                        <input type="radio" name="partytype" value="admin" id="admintype" checked>
+                        <label for="admintype">Admin</label>
+                        <br>
+                        <input type="radio" name="partytype" value="equal" id="equaltype">
+                        <label for="equaltype">Equal</label>
+                    </div>
+
+                    <input type="submit" class="btn submit-btn" value="Submit">
+                </form>
+            {% endif %}
+        </div>
+    </body>
+    <script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/partyForm.js') }}"></script>
+</html>

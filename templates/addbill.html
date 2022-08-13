@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Bill Splitter</title>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" charset="utf-8">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+        <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    </head>
+    <body>
+
+        {% with activeElem="bills", username=current_user.username %}
+            {% include "header.html"%}
+        {% endwith%}
+
+        <div class="content">
+            <h1>Create new Bill</h1>
+
+            {% if party|length == 0 %}
+                <p>No admin perms in any party</p>
+            {% else %}
+
+                <div id="errmsg" class="hidden"></div>
+
+                <form action="/addbillredirect" id="billform" method="POST">
+                    
+                    <div class="form-container">
+                        <label for="party" class="form-label">Choose a party:</label>
+                        <span class="dropdown-opt">
+                        {% if selected_option is none %}
+                            <select name="party" id="party">
+                            {% for group in party %}
+                                <option value="{{ group.party.id }}">{{ group.party.name }}</option>
+                            {% endfor %}
+                            </select>
+                        {% else %}
+                            <select name="party" id="party" disabled>
+                                <option value="{{ selected_option.id }}">{{ selected_option.name }}</option>
+                            </select>
+                            <input type="hidden" name="party_id" value="{{ selected_option.id }}">
+                        {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="form-container">
+                        <div class="form-cell">
+                            <label for="name" class="form-label">Name: </label>
+                            <input type="text" name="name" id="name" autofocus minlength="2" maxlength="45" required placeholder="Bill Name">
+                        </div>
+
+                        <div class="form-cell">
+                            <label for="description" class="form-label">Description: </label>
+                            <input type="text" name="description" id="description" minlength="2" maxlength="195" placeholder="Description (Optional)">
+                        </div>
+
+                        <div class="form-cell">
+                            <label for="amount" class="form-label">Amount: </label>
+                            <input type="number" name="amount" id="amount" min="0" step="0.01" required placeholder="Bill Amount">
+                        </div>
+                    </div>
+
+                    <div class="form-container">
+                        <div class="form-cell">
+                            <input type="checkbox" name="tlimit" id="tlimit" onchange="unhideDate(this);">
+                            <label for="tlimit" class="form-slabel">Time Limit: </label>
+                        </div>
+
+                        <div class="form-cell hidden">
+                            <label class="form-label" id="datelabel" for="due">Due Date and Time: </label>
+                            <input id="dateinput" type="date" name="duedate">
+                            <input id="dateinput" type="time" name="duetime">
+                        </div>
+                    </div>
+
+                    <div class="form-container">
+                        <p class="form-label">
+                            By default, the bill amount is split evenly among the members of the party. <br>
+                            The bill can be split into uneven portions by selecting the checkbox and specifying the each member has to pay. <br>
+                            An amount of £0 will result in no bill being created for that member. 
+                        </p>
+
+                        <input type="checkbox" name="uneven" id="uneven">
+                        <label for="uneven" class="form-slabel">Uneven portions</label>
+                        
+                        <div class="hidden" id="fractions">
+                            {% if selected_option is none %}
+                                {% for member in party[0].party.members %}
+                                    <div class="form-cell">
+                                        <label for="user{{ member.user.id }}">{{ member.user.name }}: </label>
+                                        <input type="number" name="{{ member.user.id }}" id="user{{ member.user.id }}" min="0" step="0.01" value="0">
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                {% for member in selected_option.members %}
+                                    <div class="form-cell">
+                                        <label for="user{{member.user.id}}">{{member.user.name}}: </label>
+                                        <input type="number" name="{{member.user.id}}" id="user{{member.user.id}}" min="0" step="0.01" value="0"><br><br>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <input type="submit" class="btn submit-btn" value="Submit">
+                </form>
+            {% endif %} 
+        </div>
+    </body>
+    <script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/billForm.js') }}"></script>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Bill Splitter</title>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" charset="utf-8">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+        <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    </head>
+    <body>
+        {% with activeElem="partyoverview", username=current_user.username %}
+            {% include "header.html"%}
+        {% endwith%}
+        <div class="content">
+
+            <div class="flex-header">
+                <h1 class="heading"> Parties </h1>
+                <div class="button_holder">
+                    <a href="/addparty" class="add-btn" title="Add Party">
+                        <button>+</button>
+                    </a>
+                    <div class="popup">Create Party</div>
+                </div>
+            </div>
+            <div class="grid wrap">
+            {% for partymember in parties %}
+                <div class="innerblock btn_block flex-block">
+                    <a href="/focusedparty/{{ partymember.party.id }}" title="Open Party"><span class="div-btn"></span></a>
+                    <p class="title">{{ partymember.party.name }}</p>
+                </div>
+            {% else %}
+                <p>No parties</p>
+            {% endfor %}
+            </div>
+            
+            <h1 class="heading"> Friends </h1>
+            <div class="grid wrap" id="friendlist">
+            {% for friend in friends %}
+                <div class="innerblock flex-block">
+                    <div class="flex-row flex-wrap">
+                        <p class="title">{{ friend[0].name|title }}</p>
+                        <form action="" class="friendremoveform" method="POST">
+                            <input type="hidden" name="id" value="{{ friend[0].id }}">
+                            <input type="submit" class="btn remove-btn" value="Remove">
+                        </form>
+                    </div>
+                    <p> <span class="bill-label">Username:</span> {{ friend[0].username}}</p>
+                    <p> <span class="bill-label">Common parties:</span>
+                        {% for party in friend[1] %}
+                            {% if loop.index == friend[1]|length %}
+                                {{ party }}
+                            {% else %}
+                                {{ party }},
+                            {% endif %}
+                        {% else %}
+                            No common parties
+                        {% endfor %}
+                    </p>
+                </div>
+            {% else %}
+                <p>No friends</p>
+            {% endfor %}
+            </div>
+
+            <h2 class="heading"> Friend Requests </h2>
+
+            <form action="" id="friendform" method="POST">
+                <label for="username">Add a Friend: </label>
+                <input type="username" id="username" name="username" required minlength="4" maxlength="35" placeholder="Username">
+                <input type="submit" class="btn generic-btn" value="Send Request">
+            </form>
+
+            <div id="errmsg" class="hidden"></div>
+
+            <h3 class="heading"> Incoming </h3>
+
+            <div id="infriendrequest">
+            {% for request in requests %}
+                <div id="inreq{{ request[1] }}">
+                    <p>
+                        Name: {{ request[0].name|title }} <br>
+                        Username: {{ request[0].username }}
+                    </p>
+                    <form action="" class="friendreqform" method="POST">
+                        <input type="hidden" name="id" value="{{ request[1] }}">
+                        <input type="submit" class="btn accept-btn" name="action" value="Accept">
+                        <input type="submit" class="btn remove-btn" name="action" value="Reject">
+                    </form>
+                </div>
+            {% else %}
+                <p id="no-in-req">No friend requests</p>
+            {% endfor %}
+            </div>
+
+            <h3 class="heading"> Outgoing </h3>
+            
+            <div id="outfriendrequests">
+            {% for request in pending %}
+                <p>
+                    Name: {{ request[0].name|title }} <br>
+                    Username: {{ request[0].username }}
+                </p>
+            {% else %}
+                <p id="no-out-req">No friend requests</p>
+            {% endfor %}
+            </div>
+
+        </div>
+    </body>
+    <script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/friendForm.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/focusAssist.js') }}"></script>
+</html>

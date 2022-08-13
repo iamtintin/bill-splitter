@@ -1,0 +1,16 @@
+<header>
+    <nav>
+        <img class="logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+        <ul class="navlinks">
+            <li><a href="{{ url_for('overview') }}" class="links {{'active' if activeElem == 'overview' }}" title="Go to Main Overview">Overview</a></li>
+            <li><a href="{{ url_for('billoverview') }}" class="links {{'active' if activeElem == 'bills' }}" title="Go to Bills Overview">Bills</a></li>
+            <li><a href="{{ url_for('partyoverview') }}" class="links {{'active' if activeElem == 'partyoverview' }}" title="Go to Party Overview">Friends & Parties</a></li>
+            <li>
+                <div class="auth-label">
+                    <a href="{{ url_for('logout') }}" title="Log Out"><button class="logout {{'active' if activeElem == 'logout' }}">Sign out</button></a>
+                    <p>Logged in as {{username}}</p>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</header>

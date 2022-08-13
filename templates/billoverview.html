@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Bill Splitter</title>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" charset="utf-8">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+        <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    </head>
+    <body>
+
+        {% with activeElem="bills", username=current_user.username %}
+            {% include "header.html"%}
+        {% endwith%}
+
+        <div class="content">
+            <h1>Bills Overview</h1>
+            <div class="b-grid">
+
+                <div class="rowblock flex-block">
+                    <div class="flex-column">
+
+                        <div class="flex-header">
+                            <h2> Unpaid Bills <span class="subheading">- Total Pending: {{ "£%.2f"|format(total_pending) }}</span></h2>
+                            <div class="button_holder">
+                                <a href="/addbill" class="add-btn" title="Create New Bill"><button>+</button></a>
+                                <div class="popup"> Add Bill</div>
+                            </div>
+                        </div>
+
+                        {% for item in unpaid_bills%}
+                            <div class="flex-cell">
+                                
+                                <a href="/focusedbill/{{ item.id }}" title="Open Unpaid Bill"><span class="div-btn"></span></a>
+
+                                <div class="flex-row flex-wrap">
+                                    <div class="bill-attr"><span class="bill-name">{{ item.bill.name }}</span><span class="bill-label"> in <span class="bill-party">{{ item.bill.party.name }}</span></span></div>
+                                    <div class="bill-attr"><span class="bill-label">Set:</span> {{ item.bill.start.strftime('%H:%M %d/%m/%y') }}</div>
+                                    <div class="bill-attr {{ 'bill-overdue' if (not item.bill.end is none) and (item.bill.end < time)}}"><span class="bill-label">Due:</span> {{ 'None' if item.bill.end is none else item.bill.end.strftime('%H:%M %d/%m/%y') }}</div>
+                                    <div class="bill-amount">{{ "£%.2f"|format(item.amount) }}</div>
+                                </div>
+
+                                <div class="flex-row flex-wrap">
+                                    <div class="bill-descr">{{ item.bill.description }}</div>
+                                    <div class="bill-attr bill-unpaid">UNPAID</div>
+                                </div>
+
+                            </div>
+                        {% else %}
+                            <div>
+                                <p>No Bills to present</p>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+                <div class="rowblock flex-block">
+                    <div class="flex-column">
+
+                        <h2> Payment Confirmations <span class="subheading"> - Completed Payments of party members that you can confirm</span> </h2>
+
+                        {% for item in confirmreq%}
+                            <div class="flex-cell">
+
+                                <a href="/focusedpartybill/{{ item.bill.id }}" title="Open Party Bill to view Confirmation Request"><span class="div-btn"></span></a>
+
+                                <div class="flex-row flex-wrap">
+                                    <div class="bill-name">{{ item.bill.name }}</div>
+                                    <div class="bill-head"><span class="bill-label">User:</span> {{ item.user.name|capitalize }}</div>
+                                    <div class="bill-attr"><span class="bill-label">Paid:</span> {{ item.paid_dt.strftime('%H:%M %d/%m/%y') }}</div>
+                                    <div class="bill-amount">{{ "£%.2f"|format(item.amount) }}</div>
+                                </div>
+
+                                <div class="flex-row flex-wrap">
+                                    <div class="bill-descr">{{ item.bill.description }}</div>
+                                    <div class="bill-attr bill-pending">CONFIRMATION</div>
+                                </div>
+
+                            </div>
+                        {% else %}
+                            <div>
+                                <p>No Bills Payments to Confirm</p>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+                <div class="rowblock flex-block">
+                    <div class="flex-column">
+
+                        <h2> Paid Bills <span class="subheading">- Total Paid: {{ "£%.2f"|format(total_paid) }}</span></h2>
+
+                        {% for item in paid_bills%}
+                            <div class="flex-cell">
+
+                                <a href="/focusedbill/{{ item.id }}" title="Open Paid Bill"><span class="div-btn"></span></a>
+
+                                <div class="flex-row flex-wrap">
+                                    <div class="bill-attr"><span class="bill-name">{{ item.bill.name }}</span><span class="bill-label"> in <span class="bill-party">{{ item.bill.party.name }}</span></span></div>
+                                    <div class="bill-attr"><span class="bill-label">Set:</span> {{ item.bill.start.strftime('%H:%M %d/%m/%y') }}</div>
+                                    <div class="bill-attr"><span class="bill-label">Paid:</span> {{ item.paid_dt.strftime('%H:%M %d/%m/%y') }}</div>
+                                    <div class="bill-amount">{{ "£%.2f"|format(item.amount) }}</div>
+                                </div>
+
+                                <div class="flex-row flex-wrap">
+                                    <div class="bill-descr">{{ item.bill.description }}</div>
+                                    <div class="bill-attr {{ 'bill-paid' if item.confirmed else 'bill-pending' }}">{{ 'PAID' if item.confirmed else 'CONFIRMATION PENDING' }}</div>
+                                </div>
+
+                            </div>
+                        {% else %}
+                            <div>
+                                <p>No Bills Payments to Confirm</p>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </body>
+    <script src="{{ url_for('static', filename='js/focusAssist.js') }}"></script>
+</html>

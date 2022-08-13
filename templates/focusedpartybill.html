@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Bill Splitter</title>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" charset="utf-8">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+        <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    </head>
+    <body>
+        {% with activeElem="bills", username=current_user.username %}
+            {% include "header.html"%}
+        {% endwith%}
+        <div class="content">
+            {% if partybill is none %}
+                <div class="visible-err">Party has no such bill</div>
+            {% else %}
+                <h1> Party Bill </h1>
+
+                <div class="list-header">
+                    <h2> {{ partybill.name }} <span class="subtext"> for <span class="bill-head">{{ partybill.party.name }}</span></span></h2>
+                    <p class="fbill-descr"> {{ partybill.description }} </p>
+                </div>
+
+                <div class="list-content">
+                    <p><span class="bill-label">Set: </span>{{ partybill.start.strftime('%H:%M %d/%m/%y') }} </p>
+                    {% if partybill.end is none %}
+                        <p><span class="bill-label">Due: </span>None </p>
+                    {% else %}
+                        <p><span class="bill-label">Due: </span>{{ partybill.end.strftime('%H:%M %d/%m/%y') }} </p>
+                    {% endif %}
+                    <p id="allpaid"><span class="bill-label">Status: </span><span class="{{ 'bill-paid' if partybill.status else 'bill-unpaid' }}">{{ 'PAID' if partybill.status else 'UNPAID' }} </span></p>
+                    <p><span class="bill-label">Amount: </span>{{ "£%.2f"|format(partybill.amount) }} </p>
+                    <p id="allamount"><span class="bill-label">Paid: </span>{{ "£%.2f"|format(partybill.paid) }} </p>
+                    <form action="\deletebill" method="POST">
+                        <input type="hidden" name="id" value="{{ partybill.id }}">
+                        <input type="submit" class="btn delete-btn" value="Delete Bill">
+                    </form>
+                </div>
+                
+
+                <h2 class="heading"> User Bill Components </h2>
+
+                <div class="grid wrap">
+                {% for userbill in partybill.user_bills %}
+                    <div class="innerblock flex-block">
+                        <p><span class="bill-label">For: </span>{{ userbill.user.name|title }} ({{ userbill.user.username }}) </p>
+                        <p><span class="bill-label">Amount: </span>{{ "£%.2f"|format(userbill.amount) }} </p>
+                        <p class="paid"><span class="bill-label">Paid: </span><span class="{{ 'bill-paid' if userbill.status else 'bill-unpaid' }}">{{ 'PAID' if userbill.status else 'UNPAID' }} </span></p>
+                        {% if userbill.status %}
+                            <p class="confirm"><span class="bill-label">Confirmed: </span><span class="{{ 'bill-paid' if userbill.confirmed else 'bill-pending' }}">{{ 'CONFIRMED' if userbill.confirmed else 'PENDING' }} </span></p>
+                            <p class="paidtime"><span class="bill-label">Paid DT: </span>{{ userbill.paid_dt.strftime('%H:%M %d/%m/%y') }} </p>
+                            {% if not userbill.confirmed %}
+                                <form action="\billconfirmredirect" class="billreqform" method="POST">
+                                    <input type="hidden" name="id" value="{{ userbill.id }}">
+                                    <input type="submit" class="btn accept-btn" name="action" value="Accept">
+                                    <input type="submit" class="btn remove-btn" name="action" value="Deny">
+                                </form>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div id="errmsg" class="hidden"></div>
+
+            {% endif %}
+        </div>
+    </body>
+    <script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/billConfirm.js') }}"></script>
+</html>

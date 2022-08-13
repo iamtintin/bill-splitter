@@ -1,0 +1,800 @@
+@import url("https://fonts.googleapis.com/css?family=DM+Sans:400,500,700&display=swap");
+
+body {
+    background-color: #1e1f23;
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    color: white;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.content {
+    margin: 30px 3%;
+}
+
+.hidden {
+    clip: rect(0 0 0 0);
+    position: absolute;
+    overflow: hidden;
+}
+
+/*------------------------------------------------------------------------------
+                                VARIABLES
+------------------------------------------------------------------------------*/
+
+:root {
+    --blue: rgb(154, 206, 255);
+    --grey: rgb(165, 165, 165);
+    --lightgrey: rgb(209, 209, 209);
+    --green: rgb(145, 255, 173);
+    --red: rgb(255, 133, 133);
+    --orange: rgb(255, 172, 133);
+}
+
+/*------------------------------------------------------------------------------
+                        LOGIN AND REGISTER FORM
+------------------------------------------------------------------------------*/
+
+.loginbox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(500px, 90%);
+    min-width: 100px;
+    padding: 40px;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,.5);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.6);
+    border-radius: 10px;
+}
+
+.loginbox h1 {
+    margin: 0 0 30px;
+    padding: 0;
+    color: white;
+    text-align: center;
+}
+
+.field {
+    position: relative;
+}
+
+.field input {
+    padding: 16px 10px;
+    width: 95%;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 0.25rem;
+    outline: none;
+    margin-top: 8px;
+    background-color: #3b4148;
+    color: inherit;
+    font-size: 1em;
+    letter-spacing: 0.16em;
+}
+
+.ibox:focus, .ibox:hover{
+    background-color: #434a52;
+}
+
+.loginbox input[type="submit"] {
+    width: 100%;
+}
+
+.field input[type="submit"] {
+    background-color: #c93838;
+    border-radius: 0.25rem;
+    -webkit-transition: background-color .5s;
+    transition: background-color .5s;
+}
+
+.field input[type="submit"]:hover, .field input[type="submit"]:focus {
+    background-color: #8d1919;
+    border-radius: 0.25rem;
+    -webkit-transition: background-color .5s;
+    transition: background-color .5s;
+}
+
+.txtbtn {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    outline: 0;
+    text-decoration: none;
+}
+
+.txtbtn:hover, .txtbtn:focus {
+    text-decoration: underline;
+}
+
+/*------------------------------------------------------------------------------
+                            NAVIGATION BAR
+------------------------------------------------------------------------------*/
+
+header {
+    overflow: hidden;
+}
+
+.logo {
+    height: 50px;
+    border-radius: 5px;
+    box-shadow: 6px 6px 2px rgb(0, 0, 0); 
+    transition: all 0.3s ease-in-out;
+}
+
+.logo:hover {
+    transform: scale(1.4, 1.4);
+}
+
+nav {
+    max-width: 75vw;
+    margin: 0 auto;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.navlinks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.auth-label {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    align-content: center;
+}
+
+.auth-label p {
+    font-size: 0.75em;
+    cursor: default;
+    margin: 0;
+    color: #bbb;
+}
+
+.navlinks a {
+    position: relative;
+    text-decoration: none;
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1em;
+    letter-spacing: 0.05em;
+    color: white;
+    padding: 20px 10px 7px 10px;
+    margin: 0 10px;
+}
+
+.links:after {
+    bottom: 0;
+    content: "";
+    height: 2px;
+    left: 50%;
+    position: absolute;
+    background: white;
+    transition:width .3s ease 0s,left .3s ease 0s;
+    width: 0;
+}
+
+.links:hover:after{
+    width: 100%;
+    left: 0;
+}
+
+.links:focus:not(:hover) {
+    border-bottom: white 1px solid;
+}
+
+.navlinks a.active {
+    color: #bbb;
+}
+
+.navlinks li {
+    display: inline-block;
+}
+
+.logout {
+    padding: 9px 10px;
+    background-color: #A12626;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9em;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: white;
+    transition: all 0.3s ease 0s;
+}
+
+.logout:hover, .logout:focus {
+    background-color: #eee;
+    color: rgb(185, 23, 23);
+    transition: all 0.3s ease 0s;
+}
+
+/*------------------------------------------------------------------------------
+                                FLEX PANEL
+------------------------------------------------------------------------------*/
+
+.grid {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 30px;
+    height: max-content;
+}
+
+.flex-block {
+    display: flex;
+    background-color: #0d0c0f;
+    border-radius: 1em;
+    box-shadow: 5px 5px 10px black;
+    transition: all 0.3s ease 0s;
+}
+
+.flex-block:hover {
+    transform: translateY(-10px);
+    transition: all 0.3s ease 0s;
+}
+
+.flex-block a:focus {
+    outline: none;
+}
+
+.flex-container {
+    display: flex;
+    padding: 0;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 30px;
+    height: max-content;
+    flex: 1;
+    overflow: visible;
+}
+
+.mainblock {
+    padding: 0 0 2em 0;
+    flex: 2;
+    overflow: visible;
+}
+
+.sideblock {
+    padding: 0 0 2em 0;
+    overflow: visible;
+}
+
+.sideblock .flex-cell{
+    font-size: 14px;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    width: 100%;
+    margin: 0.5em 3em 0.5em 3em;
+}
+
+.flex-cell {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5em;
+    padding: 2em;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease 0s;
+}
+
+.flex-cell:hover, .flex-cell-focus {
+    background-color: rgba(107, 107, 107, 0.473);
+    transition: all 0.3s ease 0s;
+}
+
+.flex-cell a:focus {
+    outline: none;
+}
+
+.flex-cell:not(:last-child) {
+    border-bottom: rgb(158, 158, 158) 1px solid;
+}
+
+.flex-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap:20px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.flex-row {
+    display: flex;
+    column-gap: 1em;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;    
+    position: relative;
+    z-index: 1;
+}
+
+@media only screen and (max-width: 660px){
+    .flex-wrap {
+        flex-wrap: wrap;
+        line-height: 1.4em;
+    }
+
+    .flex-wrap div {
+        margin: 10px 0;
+    }
+}
+
+@media only screen and (max-width: 1100px){
+    #overview-grid {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: stretch;
+        flex-wrap: wrap;
+        gap: 30px;
+        height: max-content;
+    }
+}
+
+/*------------------------------------------------------------------------------
+                    CONTENT STYLING FOR FLEX PANEL
+------------------------------------------------------------------------------*/
+
+.bill-attr {
+    font-size: 1.1em;
+}
+
+.bill-descr {
+    font-size: 0.95em;
+    color: var(--grey);
+}
+
+.bill-label {
+    font-weight: 600;
+    color: var(--grey);
+}
+
+.bill-name {
+    font-size: 1.4em;
+    font-weight: 800;
+    color: var(--blue);
+}
+
+.bill-party {
+    color: white;
+}
+
+.bill-head {
+    font-size: 1.2em;
+    color: var(--blue);
+}
+
+.bill-paid {
+    font-weight: 600;
+    color: var(--green);
+}
+
+.bill-unpaid {
+    font-weight: 600;
+    color: var(--red);
+}
+
+.bill-pending {
+    font-weight: 600;
+    color: var(--orange);
+}
+
+.bill-overdue {
+    color: var(--red);
+}
+
+.bill-amount {
+    font-weight: 600;
+    font-size: 1.2em;
+}
+
+/*------------------------------------------------------------------------------
+                        BUTTONS IN FLEX PANEL
+------------------------------------------------------------------------------*/
+
+.div-btn {
+    position:absolute; 
+    width:100%;
+    height:100%;
+    top:0;
+    left: 0;
+    z-index: 2;
+}
+
+.button_holder {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.add-btn button {
+    background-color: #c93838;
+    outline: none;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5em;
+    font-weight: 500;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    transition: all 0.4s ease;
+}
+
+.add-btn button:hover, .add-btn button:focus {
+    background-color: #922929;
+    color: #eee;
+    transition: all 0.4s ease;
+}
+
+.popup {
+    color: #fff;
+    overflow: hidden;
+    font-size: 1.2em;
+    margin: 10px;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+
+.button_holder:hover > .popup, .add-btn:focus + .popup{
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+@media not (hover: hover) {
+    .popup {
+        visibility: visible;
+        opacity: 1;
+    }        
+}
+
+/*------------------------------------------------------------------------------
+                        BILL OVERVIEW FLEX PANEL
+------------------------------------------------------------------------------*/
+
+.b-grid {
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+    flex-direction: column;
+	gap: 35px;
+}
+
+.rowblock {
+    padding: 0 0 2em 0;
+    overflow: visible;
+}
+
+/*------------------------------------------------------------------------------
+                        ERROR MESSAGES
+------------------------------------------------------------------------------*/
+
+.visible-err {
+    margin: 30px auto;
+    max-width: 60%;
+    width: fit-content;
+    height: fit-content;
+    color: #A94A4C;
+    background-image: linear-gradient(#F2E1E1, #E7C3C3);
+    border: #DFAEAE 1px solid;
+    border-radius: 5px;
+    text-align: left;
+    padding: 5px 20px;
+    font-weight: 100;
+}
+
+/*------------------------------------------------------------------------------
+                            INPUT FORMS
+------------------------------------------------------------------------------*/
+
+.dropdown-opt {
+    display: inline-block;
+    margin: 0 20px;
+}
+
+.dropdown-opt select {
+    background-color: rgb(182, 192, 221);
+    color: black;
+    min-width: 10em;
+    padding: 0.3em;
+    font-size: 1.02em;
+    border: 0;
+    border-radius: 4px;
+}
+
+.dropdown-opt select[disabled] {
+    background-color: #ce7373;
+    color: rgb(66, 66, 66);
+}
+
+.form-container {
+    margin: 40px 0;
+}
+
+.form-cell{
+    margin: 0.8em 0;
+}
+
+.form-label {
+    color: var(--lightgrey);
+    font-weight: 500;
+    font-size: 1.2em;
+    margin-right: 20px;
+}
+
+.form-text {
+    font-size: 0.85em;
+}
+
+.form-slabel {
+    font-size: 1.15em;
+}
+
+input:not([type="submit"]):not(.ibox) {
+    padding: 0.4em;
+    font-size: 1.02em;
+}
+
+/*------------------------------------------------------------------------------
+                                SMALLER FLEX PANEL
+------------------------------------------------------------------------------*/
+
+.wrap {
+    justify-content: flex-start;
+    align-content: flex-start;
+}
+
+.btn_block {
+    position: relative;
+}
+
+.btn_block:hover, .btn-block-focus {
+    background-color: #232a50;
+}
+
+.innerblock {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 10px 20px;
+    max-width: 300px;
+    overflow: visible;
+}
+
+.innerblock:hover p.title, .innerblock-focus{
+    color:rgb(211, 69, 69);
+}
+
+.innerblock p {
+    margin: 5px;
+}
+
+.innerblock .p-user {
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+
+/*------------------------------------------------------------------------------
+                                NOTIF FLEX PANEL
+------------------------------------------------------------------------------*/
+
+#notif-flag {
+    background-color: #c93838;
+    border-radius: 18px;
+    text-align: center;
+    font-size: 1.4em;
+    font-weight: 300;
+    padding: 2px 4px;
+    height: 30px;
+    min-width: 30px;
+    width: fit-content;
+    animation-name: size-pulse;
+    animation-duration: 2000ms;
+    transform-origin:70% 70%;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes size-pulse {
+    0% { transform: scale(1); }
+    20% { transform: scale(1.05); }
+    50% { transform: scale(1.2); }
+    80% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.notif-alert {
+    animation: pulse 2s;
+    box-shadow: 0 0 0 15px rgba(0, 0, 0, 0);
+}
+
+  
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.788);
+    }
+}
+
+.compact-cell {
+    padding: 0 10px;
+    cursor: default;
+    transition: all 0.3s ease 0s;
+}
+
+.compact-cell:hover {
+    color: rgb(211, 69, 69);
+    transition: all 0.3s ease 0s;
+}
+
+.compact-cell:not(:last-child) {
+    border-bottom: rgb(158, 158, 158) 1px solid;
+}
+
+/*------------------------------------------------------------------------------
+                            MORE CONTENT STYLING
+------------------------------------------------------------------------------*/
+
+.heading:not(:first-child){
+    margin-top: 1.5em;
+}
+
+.subheading {
+    font-size: 0.85em;
+    color: var(--grey);;
+}
+
+
+p.title{
+    font-size: 1.25em;
+    font-weight: 500;
+}
+
+
+.list-header * {
+    margin: 0;
+}
+
+.list-content {
+    margin-top: 40px;
+    font-size: 1.05em;
+    line-height: 0.8;
+}
+
+.lists {
+    line-height: 0.8;
+}
+
+
+.subtext {
+    color: var(--grey);
+    font-size: 0.7em;
+}
+
+.fbill-descr {
+    color: var(--lightgrey);
+    font-size: 1.18em;
+}
+
+.p-name {
+    color: var(--blue);
+    font-size: 1.15em;
+    font-weight: 500;
+}
+
+.p-admin {
+    color: var(--orange);
+    font-size: 1.15em;
+    font-weight: 500;
+}
+
+.p-user {
+    color: var(--lightgrey);
+    font-size: 1.05em;
+}
+
+/*------------------------------------------------------------------------------
+                                BUTTON STYLING
+------------------------------------------------------------------------------*/
+
+.btn {
+    color: #fff;
+    border: 0;
+    margin: 5px;
+    border-radius: 5px;
+    transition: ease-out 0.4s;
+}
+
+.remove-btn {
+    padding: 5px 10px;
+    background-color: #993838;
+}
+
+.remove-btn:hover, .remove-btn:focus{
+    background-color: #662929;
+}
+
+.accept-btn {
+    padding: 5px 10px;
+    background-color: #367a39;
+}
+
+.accept-btn:hover, .accept-btn:focus{
+    background-color: #224625;
+}
+
+.submit-btn {
+    font-size: 1.02em;
+    padding: 8px 16px;
+    background-color: #367a39;
+    box-shadow: inset 0 0 0 0 #367a39;
+}
+
+.submit-btn:hover, .submit-btn:focus{
+    box-shadow: inset 200px 0 0 0 #224625;
+}
+
+.generic-btn {
+    font-size: 1.02em;
+    padding: 8px 16px;
+    background-color: #3963af;
+    box-shadow: inset 0 0 0 0 #3963af;
+}
+
+.generic-btn:hover, .generic-btn:focus{
+    box-shadow: inset 200px 0 0 0 #293a8d;
+}
+
+.delete-btn {
+    font-size: 1.02em;
+    padding: 8px 16px;
+    background-color: #993838;
+    box-shadow: inset 0 0 0 0 #993838;
+}
+
+.delete-btn:hover, .delete-btn:focus{
+    box-shadow: inset 200px 0 0 0 #662929;
+}
+
+.clear-btn {
+    padding: 1px 5px;
+    font-size: 1.2em;
+    margin-left: 2px;
+    text-align: center;
+    color: white;
+    background-color: #b93636;
+    border: 1px solid #b93636;
+}
+
+.clear-btn:hover, .clear-btn:focus {
+    color: #b93636;
+    background-color: white;
+}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Bill Splitter</title>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" charset="utf-8">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+        <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    </head>
+    <body>
+        {% with activeElem="partyoverview", username=current_user.username %}
+            {% include "header.html"%}
+        {% endwith%}
+        <div class="content">
+            {% if err|length != 0 %}
+                <div class="visible-err">{{err}}</div>
+            {% else %}
+                <h1><span class="subheading">Party:</span> {{ party.name }}</h1>
+
+                <h2>Members</h2>
+                <div>
+                    <div id="memberlist" class="lists">
+                    {% for member in party.members %}
+                        <p class="p-user"><span class="p-name">{{ member.user.name|title }} </span>({{member.user.username}})</p>
+                    {% endfor %}
+                    </div>
+                    
+                    {% if is_admin %}
+                        {% if friends|length == 0 %}
+                            <p class="p-user">No more friends to add to this Party. </p>
+                        {% else %}
+                            <form action="" id="addpartyuser" method="POST">
+                                <label for="user" class="p-user">Add a user:</label>
+                                <span class="dropdown-opt">
+                                    <select name="user" id="user">
+                                        {% for friend in friends%}
+                                            <option value="{{friend.id}}">{{friend.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </span>
+                                <input type="submit" class="btn generic-btn" value="Add Friend to Party">
+                                <input type="hidden" name="partyid" value="{{party.id}}">
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
+                <h3 class="heading">Admins</h3>
+
+                <div class="lists">
+                    {% if party.admin %}
+                        {% for member in admin %}
+                            <p class="p-user"><span class="p-admin">{{ member.user.name|title }} </span>({{member.user.username}})</p>
+                        {% endfor %}
+                    {% else %}
+                        <p class="p-user">All users are admin</p>
+                    {% endif %}
+                </div>
+
+                {% if is_admin %}
+                    <div class="flex-header">
+                        <h2 class="heading"> Bills </h1>
+                        <div class="button_holder">
+                            <a href="/addbill/{{party.id}}" class="add-btn" title="Create New Bill"><button>+</button></a>
+                            <div class="popup"> Create Bill</div>
+                        </div>
+                    </div>
+
+                    <div class="grid wrap">
+                    {% for bill in party.bills %}
+                        <div class="innerblock btn_block flex-block">
+                            <a href="/focusedpartybill/{{ bill.id }}" title="Open Party Bill"><span class="div-btn"></span></a>
+                            <p class="title">{{ bill.name }}</p>
+                            <p class="p-user"> {{ bill.description }} </p>
+                            <p><span class="bill-label">Created: </span>{{ bill.start.strftime('%H:%M %d/%m/%y') }} </p>
+                            <p><span class="bill-label">Due: </span>{{ bill.end.strftime('%H:%M %d/%m/%y') if not bill.end is none else None }} </p>
+                            <p><span class="bill-label">Amount: </span>{{ "£%.2f"|format(bill.amount) }} </p>
+                            <p><span class="bill-label">Paid: </span>{{ "£%.2f"|format(bill.paid) }} </p>
+                            <p><span class="bill-label">Status: </span><span class="{{ 'bill-paid' if bill.status else 'bill-unpaid' }}">{{ 'PAID' if bill.status else 'UNPAID' }} </p>
+                        </div>
+                    {% else %}
+                        <p class="p-user">No bills</p>
+                    {% endfor %}
+                    </div>
+
+                {% endif %}
+
+            {% endif %}
+        </div>
+    </body>
+    <script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/userParty.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/focusAssist.js') }}"></script>
+</html>

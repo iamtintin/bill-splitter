@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Bill Splitter</title>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" charset="utf-8">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    </head>
+    <body>
+        <div class="content">
+            <h1> 404 Error</h1>
+            <h2>The Page you were looking for does not exist</h2>
+            {% if current_user.is_authenticated %}
+                <a href="/overview" title="Go to Overview Page"><button class="btn remove-btn">Return to Overview Page</button></a>
+            {% else %}
+                <a href="/login" title="Go to Login Page"><button class="btn remove-btn">Return to Login Page</button></a>
+            {% endif %}
+        </div>
+    </body>
+</html>
